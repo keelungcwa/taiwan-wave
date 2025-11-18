@@ -1,0 +1,34 @@
+name: 更新海象資料
+
+on:
+  schedule:
+    # 每 15 分鐘執行一次（CWA 資料大約 10 分鐘更新一次）
+    - cron: '*/15 * * * *'
+  workflow_dispatch:  # 允許手動觸發
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: pip install requests
+      
+      - name: 執行更新腳本
+        run: python update_data.py
+      
+      - name: Commit & Push 更新後的 JSON
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add marine_data.json
+          git commit -m "Auto update marine data $(date +'%Y-%m-%d %H:%M')" || echo "No changes"
+          git push
