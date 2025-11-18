@@ -1,0 +1,223 @@
+{
+  "update_time": "2025-11-18 15:11:42 (UTC)",
+  "source": "中央氣象署開放資料平台",
+  "total_stations": 24,
+  "stations": {
+    "46694A": {
+      "name": "龍洞浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46699A": {
+      "name": "花蓮浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46708A": {
+      "name": "龜山島浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46714D": {
+      "name": "小琉球浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46744A": {
+      "name": "大鵬灣浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46757B": {
+      "name": "新竹浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6AH2": {
+      "name": "富貴角浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6B01": {
+      "name": "彭佳嶼浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6F01": {
+      "name": "臺中浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6S62": {
+      "name": "臺東外洋浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6S94": {
+      "name": "蘭嶼浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6V27": {
+      "name": "東沙島浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6W08": {
+      "name": "馬祖浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C6W10": {
+      "name": "七美浮標",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46761F": {
+      "name": "成功波浪站",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "C5W09": {
+      "name": "東吉島波浪站",
+      "unit": "中央氣象署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46706A": {
+      "name": "蘇澳浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "TPBU01": {
+      "name": "臺北港浮標",
+      "unit": "港灣技術研究中心",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46778A": {
+      "name": "七股浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46735A": {
+      "name": "澎湖浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46759A": {
+      "name": "鵝鑾鼻浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "WRA007": {
+      "name": "臺東浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "COMC08": {
+      "name": "彌陀浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    },
+    "46787A": {
+      "name": "金門浮標",
+      "unit": "經濟部水利署",
+      "wave_height": "-",
+      "wave_direction": "-",
+      "wave_period": "-",
+      "obs_time": "-",
+      "status": "無資料"
+    }
+  }
+}
