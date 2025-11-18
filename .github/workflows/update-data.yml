@@ -2,33 +2,39 @@ name: 更新海象資料
 
 on:
   schedule:
-    # 每 15 分鐘執行一次（CWA 資料大約 10 分鐘更新一次）
-    - cron: '*/15 * * * *'
-  workflow_dispatch:  # 允許手動觸發
+    - cron: '*/15 * * * * '   # 每 15 分鐘一次
+  workflow_dispatch:        # 允許手動執行
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write               # 這一行很重要！給 push 權限
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # 預設 token 就足夠了
+
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.12'
-      
-      - name: Install dependencies
+
+      - name: Install requests
         run: pip install requests
-      
-      - name: 執行更新腳本
-        run: python getdata.py
-      
+
+      - name: 設定台灣時區 & 執行更新腳本
+        env:
+          TZ: 'Asia/Taipei'           # 強制使用台灣時間
+        run: |
+          python getdata.py
+
       - name: Commit & Push 更新後的 JSON
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           git add marine_data.json
-          git commit -m "Auto update marine data $(date +'%Y-%m-%d %H:%M')" || echo "No changes"
+          git commit -m "Auto update marine data $(date '+%Y-%m-%d %H:%M') [UTC+8]" || echo "No changes to commit"
           git push
