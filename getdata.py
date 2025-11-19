@@ -8,7 +8,8 @@ import urllib.parse
 API_KEY = os.getenv("CWA_API_KEY")
 
 # 輸出到專案根目錄的 marine_data.json
-OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "marine_data.json")
+#OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "marine_data.json")
+OUTPUT_PATH = "marine_data.json"
 
 DATA_ID = "O-B0075-001"
 WEATHER_ELEMENTS = "WaveHeight,WaveDirection,WavePeriod"
