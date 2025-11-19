@@ -248,7 +248,7 @@
                 const ctx = document.getElementById(`chart-${st.id}`).getContext('2d');
                 const allWaves = st.points.map(p => p.waveHeight);
                 const maxWave = Math.max(...allWaves);
-                const suggestedMax = maxWave > 3 ? Math.ceil(maxWave * 1.2) : 3.2;
+                const suggestedMax = maxWave > 3 ? Math.ceil(maxWave * 1.2) : 4;
 
                 new Chart(ctx, {
                     type: 'line',
@@ -266,7 +266,7 @@
                         scales: {
                             x: { type: 'time', time: { unit: 'hour', displayFormats: { hour: 'MM/dd HH:mm' } }, title: { display: true, text: '時間' } },
                             y: { position: 'left', min: 0, max: suggestedMax, title: { display: true, text: '浪高 (m)', color: '#007bff' }, ticks: { color: '#007bff' } },
-                            y1: { position: 'right', title: { display: true, text: '週期 (s)', color: '#212529' }, grid: { drawOnChartArea: false }, ticks: { color: '#212529' } }
+                            y1: { position: 'right', min: 0, title: { display: true, text: '週期 (s)', color: '#212529' }, grid: { drawOnChartArea: false }, ticks: { color: '#212529' } }
                         },
                         plugins: {
                             legend: { position: 'top' },
