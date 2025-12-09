@@ -6,11 +6,14 @@
     <title>臺灣即時海象監測</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <style>
+        /* --- 基礎設定 (電腦版預設) --- */
         body {
             margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex; height: 100vh; background-color: #f0f8ff; color: #333;
+            overflow: hidden; /* 電腦版固定視窗，內部捲動 */
         }
         h2 { color: #00477E; border-bottom: 2px solid #e0f0ff; padding-bottom: 5px; margin-top: 0; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+        
         .title-buttons button {
             background: #00477E; color: white; border: none; padding: 5px 10px; margin-left: 6px;
             border-radius: 5px; cursor: pointer; font-size: 0.8em; transition: all 0.2s;
@@ -18,17 +21,21 @@
         .title-buttons button:hover { background: #003360; }
         .title-buttons button.active { background: #003360; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
         
+        /* 地圖區塊 */
         #map-container {
             width: 33.33%; height: 100%; padding: 20px; box-sizing: border-box;
-            background-color: #ffffff; box-shadow: 2px 0 5px rgba(0,0,0,0.1); position: sticky; top: 0;
+            background-color: #ffffff; box-shadow: 2px 0 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 10;
         }
         #mapid { height: calc(100% - 170px); width: 100%; border-radius: 8px; border: 1px solid #ddd; }
 
+        /* 圖表區塊 */
         #chart-container {
             width: 66.67%; height: 100%; padding: 20px; box-sizing: border-box; overflow-y: auto;
             display: grid; grid-template-columns: repeat(2, 1fr);
             grid-auto-rows: minmax(300px, auto); gap: 15px;
         }
+
+        /* 圖表卡片樣式 */
         .chart-item {
             border: 1px solid #cceeff; padding: 15px; border-radius: 8px;
             background-color: white; box-shadow: 0 4px 10px rgba(0,71,126,0.05);
@@ -41,32 +48,89 @@
             background: rgba(255,255,255,0.8); padding: 2px 8px; border-radius: 4px;
         }
 
-        /* 等級色標 */
-        .chart-border-huge    { border-left: 6px solid #9c27b0 !important; }
-        .chart-border-long    { border-left: 6px solid #ff0000 !important; }
-        .chart-border-large   { border-left: 6px solid #FFA500 !important; }
-        .chart-border-medium  { border-left: 6px solid #ffdb4d !important; }
-        .chart-border-small   { border-left: 6px solid #4da6ff !important; }
-        .chart-border-none    { border-left: 6px solid #cccccc !important; }
+        /* 圖例區塊樣式 */
+        .legend-box {
+            margin-top: 10px; padding: 10px; background: #fff; border-radius: 5px;
+            border: 1px solid #ccc; font-size: 0.9em; line-height: 1.8; position: relative;
+            white-space: normal;
+        }
 
+        /* --- 顏色設定修改區 --- */
+
+        /* 巨浪 (維持紫色) */
+        .chart-border-huge    { border-left: 6px solid #9c27b0 !important; }
+        .wave-circle-huge     { background-color: #9c27b0; }
+
+        /* 長浪 (維持紅色) */
+        .chart-border-long    { border-left: 6px solid #ff0000 !important; }
+        .wave-circle-long     { background-color: #ff0000; }
+
+        /* 大浪 (修改為 #ffc800) */
+        .chart-border-large   { border-left: 6px solid #ffc800 !important; }
+        .wave-circle-large    { background-color: #ffc800; }
+
+        /* 中浪 (修改為 深藍色 #0055aa) */
+        .chart-border-medium  { border-left: 6px solid #0055aa !important; }
+        .wave-circle-medium   { background-color: #0055aa; }
+
+        /* 小浪 (修改為 淺藍色 #88ccff) */
+        .chart-border-small   { border-left: 6px solid #88ccff !important; }
+        .wave-circle-small    { background-color: #88ccff; }
+
+        /* 無資料 (維持灰色) */
+        .chart-border-none    { border-left: 6px solid #cccccc !important; }
+        .wave-circle-none     { background-color: #cccccc; }
+
+        /* 地圖標記樣式 */
         .wave-marker {
             width: 44px !important; height: 44px !important; line-height: 44px !important;
             text-align: center; border-radius: 50%; border: 3px solid #fff !important;
             cursor: pointer; font-size: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            opacity: 0.5; transition: all 0.3s;
+            opacity: 0.7; /*稍微增加不透明度讓淺色更明顯*/
+            transition: all 0.3s;
         }
         .wave-marker:hover { opacity: 1; transform: scale(1.15); }
 
-        .wave-circle-huge   { background-color: #9c27b0; }
-        .wave-circle-long   { background-color: #ff0000; }
-        .wave-circle-large  { background-color: #FFA500; }
-        .wave-circle-medium { background-color: #ffdb4d; }
-        .wave-circle-small  { background-color: #4da6ff; }
-        .wave-circle-none   { background-color: #cccccc; }
+        .credit { position: absolute; bottom: 8px; left: 20px; font-size: 0.75em; color: #666; opacity: 0.8; }
 
-        /* 新增：左下角署名 */
-        .credit {
-            position: absolute; bottom: 8px; left: 20px; font-size: 0.75em; color: #666; opacity: 0.8;
+        /* --- RWD 手機版設定 --- */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column; 
+                height: auto; 
+                overflow-y: auto; 
+            }
+
+            #map-container {
+                width: 100%;
+                height: 65vh; /* 地圖增加高度 */
+                position: relative; 
+                padding: 10px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            #mapid {
+                height: calc(100% - 150px);
+            }
+
+            .legend-box {
+                font-size: 0.8em; 
+                line-height: 1.6;
+                padding: 8px;
+            }
+
+            #chart-container {
+                width: 100%;
+                height: auto;
+                overflow-y: visible; 
+                grid-template-columns: 1fr; 
+                grid-auto-rows: minmax(240px, auto); /* 圖卡濃縮 */
+                gap: 10px; 
+                padding: 10px;
+                padding-bottom: 40px; 
+            }
+
+            h2 { font-size: 1.2em; }
         }
     </style>
 </head>
@@ -82,15 +146,15 @@
     </h2>
     <div id="mapid"></div>
     
-    <!-- 浪高等級說明（排版已優化） -->
-    <div style="margin-top:10px;padding:10px;background:#fff;border-radius:5px;border:1px solid #ccc;font-size:0.9em;line-height:1.8;position:relative;">
-        <strong>浪高等級 (過去8小時內資料):</strong>   中央氣象署基隆氣象站 製作<br>          
-        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#9c27b0;margin-right:5px;"></span>巨浪 ≥6m 
-        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ff0000;margin-right:5px;"></span>長浪 >1.5m 且週期≥8秒 
-        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#FFA500;margin-right:5px;"></span>大浪 3–6m<br>
-        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ffdb4d;margin-right:5px;"></span>中浪 1.5–3m 
-        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#4da6ff;margin-right:5px;"></span>小浪 ≤1.5m 
-        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#cccccc;margin-right:5px;"></span>無資料
+    <div class="legend-box">
+        <strong>浪高等級 (過去8小時內資料):</strong>   中央氣象署基隆氣象站 製作<br>
+          
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#9c27b0;margin-right:5px;vertical-align:middle;"></span>巨浪 ≥6m 
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ff0000;margin-right:5px;vertical-align:middle;"></span>長浪 >1.5m 且週期≥8秒 
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ffc800;margin-right:5px;vertical-align:middle;"></span>大浪 3–6m<br>
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#0055aa;margin-right:5px;vertical-align:middle;"></span>中浪 1.5–3m 
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#88ccff;margin-right:5px;vertical-align:middle;"></span>小浪 ≤1.5m 
+        <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#cccccc;margin-right:5px;vertical-align:middle;"></span>無資料
         
     </div>
 </div>
@@ -126,7 +190,7 @@
         "46706A": { lat: 24.5300,   lon: 121.8900,   name: "蘇澳浮標", unit: "經濟部水利署" },
         "TPBU01": { lat: 25.1658,   lon: 121.3500,   name: "臺北港浮標", unit: "港灣技術研究中心" },
         "46778A": { lat: 23.1336,   lon: 120.0403,   name: "七股浮標", unit: "經濟部水利署" },
-        "46735A": { lat: 23.78,     lon: 119.55,       name: "澎湖浮標", unit: "經濟部水利署" },
+        "46735A": { lat: 23.78,     lon: 119.55,        name: "澎湖浮標", unit: "經濟部水利署" },
         "46759A": { lat: 21.9164,   lon: 120.8108,   name: "鵝鑾鼻浮標", unit: "經濟部水利署" },
         "WRA007": { lat: 22.7561,   lon: 121.1714,   name: "臺東浮標", unit: "經濟部水利署" },
         "COMC08": { lat: 22.8000,   lon: 120.2500,   name: "彌陀浮標", unit: "經濟部水利署" },
@@ -211,7 +275,7 @@
                     points, 
                     max8h,
                     level,
-                    sortValue: level.order * 100 + (max8h || 0)  // 用來排序的綜合分數
+                    sortValue: level.order * 100 + (max8h || 0)
                 });
 
                 const iconSize = max8h >= 6 ? [56,56] : [44,44];
@@ -231,7 +295,7 @@
                                 過去8小時最大浪高：<strong>${level.desc}</strong>`);
             });
 
-            // 全新排序：先嚴重等級 → 同等級再比浪高數字（由大到小）
+            // 排序
             stationInfo.sort((a, b) => b.sortValue - a.sortValue);
 
             chartContainer.innerHTML = '';
@@ -240,9 +304,13 @@
                 const div = document.createElement('div');
                 div.className = `chart-item ${st.level.border}`;
 
+                const chartHeight = window.innerWidth <= 768 ? '220px' : '300px'; 
+
                 div.innerHTML = `<h3>${st.name} (${st.id}) – ${st.level.desc}</h3>
                                  <div class="unit">${st.unit}</div>
-                                 <canvas id="chart-${st.id}"></canvas>`;
+                                 <div style="height: ${chartHeight}; width: 100%;">
+                                    <canvas id="chart-${st.id}"></canvas>
+                                 </div>`;
                 chartContainer.appendChild(div);
 
                 const ctx = document.getElementById(`chart-${st.id}`).getContext('2d');
@@ -263,8 +331,28 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        layout: {
+                            padding: { left: 5 } 
+                        },
                         scales: {
-                            x: { type: 'time', time: { unit: 'hour', displayFormats: { hour: 'MM/dd HH:mm' } }, title: { display: true, text: '時間' } },
+                            x: { 
+                                type: 'time', 
+                                time: { 
+                                    unit: 'hour', 
+                                    displayFormats: { 
+                                        hour: 'MM/dd HH:mm',
+                                        day: 'MM/dd'
+                                    },
+                                    tooltipFormat: 'MM/dd HH:mm'
+                                }, 
+                                title: { display: true, text: '時間' },
+                                ticks: {
+                                    maxRotation: 0, 
+                                    minRotation: 0,
+                                    autoSkip: true,
+                                    maxTicksLimit: window.innerWidth <= 768 ? 5 : 8
+                                }
+                            },
                             y: { position: 'left', min: 0, max: suggestedMax, title: { display: true, text: '浪高 (m)', color: '#007bff' }, ticks: { color: '#007bff' } },
                             y1: { position:'right', min:0, suggestedMax:8, title:{display:true,text:'週期 (s)',color:'#212529'}, grid:{drawOnChartArea:false}, ticks:{color:'#212529', stepSize:1, callback:v=>v+'s'} }
                         },
@@ -295,6 +383,13 @@
             currentHours = parseInt(this.dataset.hours);
             fetchAndRenderData();
         });
+    });
+
+    window.addEventListener('resize', () => {
+        setTimeout(() => {
+            map.invalidateSize(); 
+            fetchAndRenderData(); 
+        }, 100); 
     });
 
     fetchAndRenderData();
